@@ -2,10 +2,93 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type NotificationLog {
+  id: Float!
+  content: String!
+  createdAt: DateTime!
+  blog: Blog!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Blog {
+  id: Float!
+  content: String!
+  author: Author!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  deletedAt: DateTime!
+  notificationLogs: [NotificationLog!]
+}
+
+type Author {
+  id: String!
+  name: String!
+
+  """Author email"""
+  email: String!
+  createdAt: DateTime!
+  blogs: [Blog!]
+  passwordHash: String!
+}
+
+type AuthPayload {
+  accessToken: String!
+  author: Author!
+}
+
 type HelloWorldModel {
   value: String!
 }
 
 type Query {
   sayHello: HelloWorldModel!
+  author(id: String!): Author
+  authors: [Author!]
+  blogs: [Blog!]
+  blog(id: Int!): Blog!
+  notificationLogs: [NotificationLog!]!
+  me: Author!
+}
+
+type Mutation {
+  createAuthor(createAuthorInput: CreateAuthorInput!): Author!
+  createBlog(createBlogInput: CreateBlogInput!): Blog!
+  updateBlog(updateBlogInput: UpdateBlogInput!): Blog!
+  removeBlog(id: Int!): Blog!
+  register(input: AuthInput!): AuthPayload!
+  login(input: AuthInput!): AuthPayload!
+}
+
+input CreateAuthorInput {
+  """Author name"""
+  name: String!
+
+  """Author email"""
+  email: String!
+
+  """Author password"""
+  password: String!
+}
+
+input CreateBlogInput {
+  content: String!
+}
+
+input UpdateBlogInput {
+  id: Int!
+  content: String!
+}
+
+input AuthInput {
+  name: String
+  email: String!
+  password: String!
+}
+
+type Subscription {
+  blogCreated: Blog!
 }
