@@ -1,7 +1,7 @@
 import type { Blog } from '@/models'
 import { gql } from '@apollo/client/core'
 import { useSubscription } from '@vue/apollo-composable'
-import { onUnmounted, ref } from 'vue'
+import { ref } from 'vue'
 
 export const BLOG_CREATED_SUBSCRIPTION = gql`
   subscription BlogCreated {
@@ -32,11 +32,6 @@ export function useNotifications() {
 
   onError((err) => {
     console.error('Subscription error:', err)
-  })
-
-  // cleanup when no component uses this anymore
-  onUnmounted(() => {
-    stop()
   })
 
   return {

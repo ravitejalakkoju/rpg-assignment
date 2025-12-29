@@ -73,7 +73,7 @@ export function useAuth() {
     try {
       // mock API (replace later)
       const { author, accessToken } = (await registerMutation({ input: { name, email, password } }))
-        ?.data
+        ?.data?.register
       setUser(author, accessToken)
     } finally {
       isLoading.value = false

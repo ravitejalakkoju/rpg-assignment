@@ -36,7 +36,7 @@ export class BlogsResolver {
     if (!author) {
       throw new Error('Author not found.');
     }
-    const newBlog = this.blogsService.create(title, content, author);
+    const newBlog = await this.blogsService.create(title, content, author);
     await pubSub.publish('BLOG_CREATED', { blogCreated: newBlog });
     return newBlog;
   }

@@ -30,7 +30,7 @@ const router = createRouter({
       component: () => import('../views/AuthView.vue'),
       redirect: '/auth/login',
       beforeEnter: () => {
-        const storedUser = localStorage.getItem('user')
+        const storedUser = localStorage.getItem('author')
         if (storedUser) {
           return { path: '/blogs' }
         }
