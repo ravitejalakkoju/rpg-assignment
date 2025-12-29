@@ -12,8 +12,8 @@ export class BlogsService {
     private readonly blogsRepository: Repository<Blog>,
   ) {}
 
-  async create(content: string, author: Author): Promise<Blog> {
-    const blog = this.blogsRepository.create({ content, author });
+  async create(title: string, content: string, author: Author): Promise<Blog> {
+    const blog = this.blogsRepository.create({ title, content, author });
     return await this.blogsRepository.save(blog);
   }
 

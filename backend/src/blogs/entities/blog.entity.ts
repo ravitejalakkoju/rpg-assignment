@@ -21,6 +21,10 @@ export class Blog {
 
   @Field()
   @Column('text')
+  title: string;
+
+  @Field()
+  @Column('text')
   content: string;
 
   @Field(() => Author)

@@ -31,12 +31,12 @@ export class BlogsResolver {
     @Args('createBlogInput') createBlogInput: CreateBlogInput,
     @Context('pubSub') pubSub: PubSub,
   ) {
-    const { content } = createBlogInput;
+    const { title, content } = createBlogInput;
     const author = await this.authorsService.findById(authorId);
     if (!author) {
       throw new Error('Author not found.');
     }
-    const newBlog = this.blogsService.create(content, author);
+    const newBlog = this.blogsService.create(title, content, author);
     await pubSub.publish('BLOG_CREATED', { blogCreated: newBlog });
     return newBlog;
   }

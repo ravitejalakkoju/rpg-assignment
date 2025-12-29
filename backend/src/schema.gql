@@ -16,6 +16,7 @@ scalar DateTime
 
 type Blog {
   id: Float!
+  title: String!
   content: String!
   author: Author!
   createdAt: DateTime!
@@ -75,6 +76,7 @@ input CreateAuthorInput {
 }
 
 input CreateBlogInput {
+  title: String!
   content: String!
 }
 
