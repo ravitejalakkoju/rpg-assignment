@@ -9,22 +9,7 @@ import { useNotifications } from './composables/useNotifications'
 const { isAuthenticated, logout } = useAuth()
 
 const isNotificationsOpen = ref(false)
-// const notifications = [
-//   {
-//     id: 1,
-//     title: 'Ravi Teja published a new blog',
-//     body: 'Drafting meaningful RPG characters.',
-//     time: 'Today · 9:30 AM',
-//     unread: true,
-//   },
-//   {
-//     id: 2,
-//     title: 'New comment on "Quest planning"',
-//     body: 'Loved the approach to pacing.',
-//     time: 'Yesterday · 6:12 PM',
-//     unread: false,
-//   },
-// ]
+
 const { notifications } = useNotifications()
 </script>
 
@@ -51,6 +36,13 @@ const { notifications } = useNotifications()
               :notifications="notifications"
               @close="isNotificationsOpen = false"
             />
+            <div
+              v-if="notifications.length"
+              class="h-3.5 min-w-3.5 w-fit p-0.5 rounded-full bg-red-500 flex items-center justify-center absolute top-0 right-0 translate-x-1/4 -translate-y-1/4 text-white"
+              style="font-size: xx-small; font-weight: 700"
+            >
+              {{ notifications.length }}
+            </div>
           </div>
           <RouterLink to="/blogs/new">
             <button
