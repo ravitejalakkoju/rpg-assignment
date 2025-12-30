@@ -1,16 +1,27 @@
 <script setup lang="ts">
 import { BellRing, LogIn, LogOut, Plus, UserRoundPlus } from 'lucide-vue-next'
 import { ref } from 'vue'
-import { RouterView } from 'vue-router'
+import { RouterView, useRouter } from 'vue-router'
 import NotificationsModal from './components/NotificationsModal.vue'
 import { useAuth } from './composables/useAuth'
 import { useNotifications } from './composables/useNotifications'
+import { useApolloClient } from '@vue/apollo-composable'
 
-const { isAuthenticated, logout } = useAuth()
+const { isAuthenticated, logout: authLogout } = useAuth()
 
 const isNotificationsOpen = ref(false)
 
 const { notifications } = useNotifications()
+
+const { resolveClient } = useApolloClient()
+const client = resolveClient()
+
+const router = useRouter()
+function logout() {
+  authLogout()
+  client.clearStore()
+  router.push('/auth/login')
+}
 </script>
 
 <template>
