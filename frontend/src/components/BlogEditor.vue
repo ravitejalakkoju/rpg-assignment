@@ -22,6 +22,7 @@ onError(
 )
 
 function onSubmit() {
+  if (!form.value.title || !form.value.content) return
   publishBlog(
     { input: form.value },
     {
@@ -77,7 +78,7 @@ function onSubmit() {
           </RouterLink>
           <button
             type="submit"
-            class="h-8 p-2 flex items-center justify-center rounded-full bg-yellow-400 border px-4 py-2 text-sm font-semibold text-black shadow-sm transition hover:bg-slate-800 active:bg-slate-900"
+            class="h-8 p-2 flex items-center justify-center rounded-full bg-yellow-400 border px-4 py-2 text-sm font-semibold text-black shadow-sm transition hover:bg-yellow-500 active:bg-yellow-600"
           >
             Publish
           </button>
