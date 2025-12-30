@@ -24,6 +24,6 @@ export class BlogEvent {
   createdAt: Date;
 
   @Field(() => Blog)
-  @ManyToOne(() => Blog, (blog) => blog.notificationLogs, { eager: true })
+  @ManyToOne(() => Blog, (blog) => blog.blogEvents, { eager: true })
   blog: Blog;
 }

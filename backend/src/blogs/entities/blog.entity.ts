@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Author } from 'src/authors/entities/author.entity';
-import { NotificationLog } from 'src/notification-logs/entities/notification-log.entity';
+import { BlogEvent } from 'src/blog-events/entities/blog-event.entity';
 import {
   Column,
   CreateDateColumn,
@@ -43,7 +43,7 @@ export class Blog {
   @DeleteDateColumn()
   deletedAt: Date;
 
-  @Field(() => [NotificationLog], { nullable: true })
-  @OneToMany(() => NotificationLog, (log) => log.blog)
-  notificationLogs?: NotificationLog[];
+  @Field(() => [BlogEvent], { nullable: true })
+  @OneToMany(() => BlogEvent, (log) => log.blog)
+  blogEvents?: BlogEvent[];
 }

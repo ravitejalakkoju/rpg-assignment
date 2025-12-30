@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CREATE_BLOG } from '@/gql'
+import { BLOGS, CREATE_BLOG } from '@/gql'
 import { handleAuthError } from '@/utils/handleAuthError.utils'
 import { useMutation } from '@vue/apollo-composable'
 import { ref } from 'vue'
@@ -22,7 +22,13 @@ onError(
 )
 
 function onSubmit() {
-  publishBlog({ input: form.value })
+  publishBlog(
+    { input: form.value },
+    {
+      refetchQueries: [{ query: BLOGS }],
+      awaitRefetchQueries: true,
+    },
+  )
 }
 </script>
 

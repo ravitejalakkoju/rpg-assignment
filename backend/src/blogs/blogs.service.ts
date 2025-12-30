@@ -4,6 +4,7 @@ import { Author } from 'src/authors/entities/author.entity';
 import { Repository } from 'typeorm';
 import { UpdateBlogInput } from './dto/update-blog.input';
 import { Blog } from './entities/blog.entity';
+import { BlogSortField, SortOrder } from './dto/query-blogs.args';
 
 @Injectable()
 export class BlogsService {
@@ -17,8 +18,15 @@ export class BlogsService {
     return await this.blogsRepository.save(blog);
   }
 
-  findAll() {
-    return this.blogsRepository.find();
+  findAll(options?: { orderBy?: BlogSortField; order?: SortOrder }) {
+    const { orderBy = BlogSortField.CREATED_AT, order = SortOrder.DESC } =
+      options || {};
+
+    return this.blogsRepository.find({
+      order: {
+        [orderBy]: order,
+      },
+    });
   }
 
   findOne(id: number) {

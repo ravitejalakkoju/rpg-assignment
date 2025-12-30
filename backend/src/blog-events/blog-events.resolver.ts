@@ -9,7 +9,7 @@ export class BlogEventsResolver {
   constructor(private readonly blogEventsService: BlogEventsService) {}
 
   @UseGuards(AuthGuard)
-  @Query(() => [BlogEvent], { name: 'notificationLogs' })
+  @Query(() => [BlogEvent], { name: 'blogEvents' })
   findAll() {
     return this.blogEventsService.findAll();
   }

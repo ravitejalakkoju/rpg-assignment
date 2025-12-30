@@ -8,14 +8,15 @@ import {
   Resolver,
   Subscription,
 } from '@nestjs/graphql';
+import { PubSub } from 'graphql-subscriptions';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { CurrentAuthorId } from 'src/auth/current-author.decorator';
 import { AuthorsService } from 'src/authors/authors.service';
 import { BlogsService } from './blogs.service';
 import { CreateBlogInput } from './dto/create-blog.input';
+import { BlogSortField, SortOrder } from './dto/query-blogs.args';
 import { UpdateBlogInput } from './dto/update-blog.input';
 import { Blog } from './entities/blog.entity';
-import { PubSub } from 'graphql-subscriptions';
 
 @Resolver(() => Blog)
 export class BlogsResolver {
@@ -43,8 +44,23 @@ export class BlogsResolver {
 
   @UseGuards(AuthGuard)
   @Query(() => [Blog], { name: 'blogs', nullable: true })
-  findAll() {
-    return this.blogsService.findAll();
+  findAll(
+    @Args('orderBy', {
+      type: () => BlogSortField,
+      nullable: true,
+    })
+    orderBy?: BlogSortField,
+
+    @Args('order', {
+      type: () => SortOrder,
+      nullable: true,
+    })
+    order?: SortOrder,
+  ) {
+    return this.blogsService.findAll({
+      orderBy,
+      order,
+    });
   }
 
   @UseGuards(AuthGuard)

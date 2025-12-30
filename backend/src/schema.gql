@@ -2,7 +2,7 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type NotificationLog {
+type BlogEvent {
   id: Float!
   event: String!
   createdAt: DateTime!
@@ -22,7 +22,7 @@ type Blog {
   createdAt: DateTime!
   updatedAt: DateTime!
   deletedAt: DateTime!
-  notificationLogs: [NotificationLog!]
+  blogEvents: [BlogEvent!]
 }
 
 type Author {
@@ -45,21 +45,24 @@ type HelloWorldModel {
   value: String!
 }
 
-type BlogEvent {
-  id: Float!
-  event: String!
-  createdAt: DateTime!
-  blog: Blog!
-}
-
 type Query {
   sayHello: HelloWorldModel!
   author(id: String!): Author
   authors: [Author!]
-  blogs: [Blog!]
+  blogs(orderBy: BlogSortField, order: SortOrder): [Blog!]
   blog(id: Int!): Blog!
-  notificationLogs: [BlogEvent!]!
+  blogEvents: [BlogEvent!]!
   me: Author!
+}
+
+enum BlogSortField {
+  CREATED_AT
+  TITLE
+}
+
+enum SortOrder {
+  ASC
+  DESC
 }
 
 type Mutation {

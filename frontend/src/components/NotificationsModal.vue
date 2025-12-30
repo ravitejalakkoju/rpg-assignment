@@ -44,28 +44,32 @@ const { author } = useAuth()
 
     <div class="max-h-[60vh] overflow-y-auto">
       <ul v-if="props.notifications.length" class="divide-y divide-slate-200">
-        <li
+        <RouterLink
           v-for="item in props.notifications"
           :key="item.id"
-          class="flex items-start gap-3 px-4 py-3"
+          :to="{ name: 'blog-selected', params: { id: item.id } }"
         >
-          <div class="flex items-center justify-center mt-1rounded-full">
-            <PartyPopper class="w-6 h-6" />
-          </div>
-          <div class="flex-1">
-            <p class="text-sm font-semibold text-slate-900">
-              <span v-if="author?.id === item.author.id">You have</span
-              ><span v-if="author?.id !== item.author.id">{{ item.author.name }} has</span>
-              published a new Blog
-            </p>
-            <p v-if="item.title" class="mt-1 text-xs text-slate-600 line-clamp-1">
-              {{ item.title }}
-            </p>
-            <p v-if="item.createdAt" class="mt-2 text-[11px] tracking-wide text-slate-400">
-              {{ longFormat(item.createdAt) }}
-            </p>
-          </div>
-        </li>
+          <li
+            class="flex items-start gap-3 px-4 py-3 cursor-pointer hover:bg-yellow-50 hover:text-yellow-600"
+          >
+            <div class="flex items-center justify-center mt-1rounded-full">
+              <PartyPopper class="w-6 h-6" />
+            </div>
+            <div class="flex-1">
+              <p class="text-sm font-semibold text-slate-900">
+                <span v-if="author?.id === item.author.id">You have</span
+                ><span v-if="author?.id !== item.author.id">{{ item.author.name }} has</span>
+                published a new Blog
+              </p>
+              <p v-if="item.title" class="mt-1 text-xs text-slate-600 line-clamp-1">
+                {{ item.title }}
+              </p>
+              <p v-if="item.createdAt" class="mt-2 text-[11px] tracking-wide text-slate-400">
+                {{ longFormat(item.createdAt) }}
+              </p>
+            </div>
+          </li>
+        </RouterLink>
       </ul>
       <div v-else class="px-4 py-10 text-center text-sm text-slate-500">You're all caught up.</div>
     </div>
