@@ -78,11 +78,22 @@ onBlogsError(
                 </div>
               </RouterLink>
             </div>
-            <img
+            <!-- <img
               src="https://m.media-amazon.com/images/I/71dbO5GHjhS._AC_UF894,1000_QL80_.jpg"
               alt="blog image"
               class="h-50 min-w-50 w-full object-cover rounded-2xl bg-neutral-300"
             />
+            <div class="h-50 min-w-50 w-full object-cover rounded-2xl bg-red-300 overflow-hidden">
+              <div class="-rotate-45 w-150 h-150 -m-36">
+                <span
+                  v-for="i in 150"
+                  :key="i"
+                  class="ml-2 text-xs font-medium text-neutral-100 opacity-30"
+                >
+                  {{ blog.title }}
+                </span>
+              </div>
+            </div> -->
           </li>
         </ul>
       </div>

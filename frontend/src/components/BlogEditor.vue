@@ -35,7 +35,7 @@ function onSubmit() {
         <p class="text-xs text-slate-600">Add a title and share your story.</p>
       </header>
 
-      <form class="space-y-5" @submit.prevent="onSubmit">
+      <form class="space-y-4" @submit.prevent="onSubmit">
         <div class="space-y-1">
           <label for="blog-title" class="text-xs font-semibold text-slate-600">Title</label>
           <input
@@ -60,18 +60,18 @@ function onSubmit() {
           ></textarea>
         </div>
 
-        <div class="flex flex-wrap items-center justify-end gap-3">
+        <div class="flex flex-wrap items-center justify-end gap-2">
           <RouterLink to="/blogs">
             <button
               type="button"
-              class="rounded-lg border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-50"
+              class="h-8 p-2 flex items-center justify-center rounded-full border border-red-200 px-4 py-2 text-sm font-semibold text-red-700 transition hover:border-red-300 hover:bg-red-50"
             >
               Cancel
             </button>
           </RouterLink>
           <button
             type="submit"
-            class="rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 active:bg-slate-900"
+            class="h-8 p-2 flex items-center justify-center rounded-full bg-yellow-400 border px-4 py-2 text-sm font-semibold text-black shadow-sm transition hover:bg-slate-800 active:bg-slate-900"
           >
             Publish
           </button>

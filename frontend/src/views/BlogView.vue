@@ -49,11 +49,22 @@ onError(
       </button>
     </RouterLink>
     <div class="flex items-center gap-12">
-      <img
+      <!-- <img
         src="https://m.media-amazon.com/images/I/71dbO5GHjhS._AC_UF894,1000_QL80_.jpg"
         alt="blog image"
         class="w-100 h-72 object-cover rounded-2xl bg-neutral-300"
       />
+      <div class="w-100 h-72 object-cover rounded-2xl bg-red-300 overflow-hidden">
+        <div class="-rotate-45 w-150 h-150 -m-36">
+          <span
+            v-for="i in 150"
+            :key="i"
+            class="ml-2 text-xs font-medium text-neutral-100 opacity-30"
+          >
+            {{ blog.title }}
+          </span>
+        </div>
+      </div> -->
       <div class="pt-4 flex flex-col gap-4">
         <div class="flex items-center gap-2">
           <span
