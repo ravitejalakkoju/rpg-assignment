@@ -10,14 +10,14 @@ import {
 
 @ObjectType()
 @Entity()
-export class NotificationLog {
+export class BlogEvent {
   @Field()
   @PrimaryGeneratedColumn('increment')
   id: number;
 
   @Field()
   @Column('text')
-  content: string;
+  event: string;
 
   @Field(() => Date)
   @CreateDateColumn()

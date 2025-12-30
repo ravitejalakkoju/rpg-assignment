@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import BlogsView from '../views/BlogsView.vue'
+import { useAuth } from '@/composables/useAuth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,8 +31,8 @@ const router = createRouter({
       component: () => import('../views/AuthView.vue'),
       redirect: '/auth/login',
       beforeEnter: () => {
-        const storedUser = localStorage.getItem('author')
-        if (storedUser) {
+        const { isAuthenticated } = useAuth()
+        if (isAuthenticated.value) {
           return { path: '/blogs' }
         }
         return true

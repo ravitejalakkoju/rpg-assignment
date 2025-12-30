@@ -1,28 +1,15 @@
+import { BLOG_CREATED_SUBSCRIPTION } from '@/gql'
 import type { Blog } from '@/models'
-import { gql } from '@apollo/client/core'
+import { handleAuthError } from '@/utils/handleAuthError.utils'
 import { useSubscription } from '@vue/apollo-composable'
-import { ref } from 'vue'
-
-export const BLOG_CREATED_SUBSCRIPTION = gql`
-  subscription BlogCreated {
-    blogCreated {
-      id
-      title
-      content
-      createdAt
-      author {
-        id
-        name
-        email
-      }
-    }
-  }
-`
+import { onUnmounted, ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const notifications = ref<Blog[]>([])
 
 export function useNotifications() {
-  const { onResult, onError } = useSubscription(BLOG_CREATED_SUBSCRIPTION)
+  const router = useRouter()
+  const { onResult, onError, stop } = useSubscription(BLOG_CREATED_SUBSCRIPTION)
 
   onResult((res) => {
     if (res.data?.blogCreated) {
@@ -30,8 +17,14 @@ export function useNotifications() {
     }
   })
 
-  onError((err) => {
-    console.error('Subscription error:', err)
+  onError(
+    handleAuthError({
+      onUnauthenticated: () => router.push('/auth/login'),
+    }),
+  )
+
+  onUnmounted(() => {
+    stop()
   })
 
   return {

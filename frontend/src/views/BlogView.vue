@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { useDate } from '@/composables/useDate'
 import { useReadTime } from '@/composables/useReadTime'
+import { BLOG } from '@/gql'
 import type { Blog } from '@/models'
+import { handleAuthError } from '@/utils/handleAuthError.utils'
 import { useQuery } from '@vue/apollo-composable'
-import gql from 'graphql-tag'
 import { ArrowLeft } from 'lucide-vue-next'
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -15,21 +16,6 @@ const { longFormat } = useDate()
 const { readTimeInMinutes } = useReadTime()
 
 const blog = ref<Blog>()
-
-const BLOG = gql`
-  query Blog($id: Int!) {
-    blog(id: $id) {
-      id
-      title
-      content
-      createdAt
-      author {
-        name
-        email
-      }
-    }
-  }
-`
 
 const blogId = computed(() => Number(route.params.id))
 
@@ -45,23 +31,18 @@ onResult((res) => {
   }
 })
 
-onError((err) => {
-  const gqlCode = err?.graphQLErrors?.[0]?.extensions?.code
-
-  if (gqlCode === 'UNAUTHENTICATED') {
-    router.push('/auth/login')
-    return
-  }
-
-  console.error(err)
-})
+onError(
+  handleAuthError({
+    onUnauthenticated: () => router.push('/auth/login'),
+  }),
+)
 </script>
 <template>
   <div class="mx-auto max-w-3/4 p-12 flex flex-col gap-2" v-if="blog" v-bind:key="blog.id">
-    <RouterLink to="/blogs">
+    <RouterLink class="mb-3 w-fit" to="/blogs">
       <button
         type="button"
-        class="mb-3 rounded-full h-8 flex items-center justify-center gap-0.5 bg-neutral-100 border border-neutral-500 p-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-200 active:bg-neutral-300"
+        class="rounded-full h-8 flex items-center justify-center gap-0.5 border border-neutral-500 p-2 text-sm font-semibold text-neutral-700 transition hover:bg-neutral-100 active:bg-neutral-200"
       >
         <ArrowLeft class="w-4.5 h-4.5" />
         Back
@@ -94,7 +75,7 @@ onError((err) => {
         </div>
       </div>
     </div>
-    <div class="py-16 text-neutral-700 line-clamp-3">
+    <div class="py-16 text-neutral-700">
       {{ blog.content }}
     </div>
   </div>

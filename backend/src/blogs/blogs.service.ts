@@ -25,11 +25,25 @@ export class BlogsService {
     return this.blogsRepository.findOneBy({ id });
   }
 
-  update(id: number, updateBlogInput: UpdateBlogInput) {
-    return this.blogsRepository.update(id, updateBlogInput);
+  async update(id: number, updateBlogInput: UpdateBlogInput) {
+    const blog = await this.blogsRepository.findOneBy({ id });
+
+    if (!blog) {
+      throw new Error('Blog not found');
+    }
+
+    Object.assign(blog, updateBlogInput);
+    return this.blogsRepository.save(blog);
   }
 
-  remove(id: number) {
-    return this.blogsRepository.softRemove({ id });
+  async remove(id: number) {
+    const blog = await this.blogsRepository.findOneBy({ id });
+
+    if (!blog) {
+      throw new Error('Blog not found');
+    }
+
+    await this.blogsRepository.softRemove(blog);
+    return blog;
   }
 }

@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { CREATE_BLOG } from '@/gql'
+import { handleAuthError } from '@/utils/handleAuthError.utils'
 import { useMutation } from '@vue/apollo-composable'
-import gql from 'graphql-tag'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
@@ -10,22 +11,15 @@ const form = ref({
   content: '',
 })
 
-const CREATE_BLOG = gql`
-  mutation CreateBlog($input: CreateBlogInput!) {
-    createBlog(createBlogInput: $input) {
-      id
-      content
-      createdAt
-      author {
-        name
-      }
-    }
-  }
-`
-const { mutate: publishBlog, onDone } = useMutation(CREATE_BLOG)
+const { mutate: publishBlog, onDone, onError } = useMutation(CREATE_BLOG)
 onDone(() => {
   router.push('/blogs')
 })
+onError(
+  handleAuthError({
+    onUnauthenticated: () => router.push('/auth/login'),
+  }),
+)
 
 function onSubmit() {
   publishBlog({ input: form.value })

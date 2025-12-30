@@ -4,7 +4,7 @@
 
 type NotificationLog {
   id: Float!
-  content: String!
+  event: String!
   createdAt: DateTime!
   blog: Blog!
 }
@@ -45,13 +45,20 @@ type HelloWorldModel {
   value: String!
 }
 
+type BlogEvent {
+  id: Float!
+  event: String!
+  createdAt: DateTime!
+  blog: Blog!
+}
+
 type Query {
   sayHello: HelloWorldModel!
   author(id: String!): Author
   authors: [Author!]
   blogs: [Blog!]
   blog(id: Int!): Blog!
-  notificationLogs: [NotificationLog!]!
+  notificationLogs: [BlogEvent!]!
   me: Author!
 }
 

@@ -8,12 +8,12 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { AuthorsModule } from './authors/authors.module';
 import { Author } from './authors/entities/author.entity';
+import { BlogEventsModule } from './blog-events/blog-events.module';
+import { BlogEvent } from './blog-events/entities/blog-event.entity';
 import { BlogsModule } from './blogs/blogs.module';
 import { Blog } from './blogs/entities/blog.entity';
 import { HelloWorldResolver } from './hello-world/hello-world.resolver';
 import { HelloWorldService } from './hello-world/hello-world.service';
-import { NotificationLog } from './notification-logs/entities/notification-log.entity';
-import { NotificationLogsModule } from './notification-logs/notification-logs.module';
 import { pubSub } from './pubsub.provider';
 
 @Module({
@@ -21,7 +21,7 @@ import { pubSub } from './pubsub.provider';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: 'data.sqlite',
-      entities: [Author, Blog, NotificationLog],
+      entities: [Author, Blog, BlogEvent],
       synchronize: true,
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
@@ -37,8 +37,9 @@ import { pubSub } from './pubsub.provider';
     }),
     AuthorsModule,
     BlogsModule,
-    NotificationLogsModule,
+    BlogEventsModule,
     AuthModule,
+    BlogEventsModule,
   ],
   controllers: [AppController],
   providers: [AppService, HelloWorldResolver, HelloWorldService],

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useDate } from '@/composables/useDate'
 import { useReadTime } from '@/composables/useReadTime'
+import { BLOGS } from '@/gql'
 import type { Blog } from '@/models'
-import { gql } from '@apollo/client/core'
+import { handleAuthError } from '@/utils/handleAuthError.utils'
 import { useQuery } from '@vue/apollo-composable'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
@@ -10,20 +11,6 @@ import { useRouter } from 'vue-router'
 const { longFormat } = useDate()
 const { readTimeInMinutes } = useReadTime()
 
-const BLOGS = gql`
-  query Blogs {
-    blogs {
-      id
-      title
-      content
-      createdAt
-      author {
-        name
-        email
-      }
-    }
-  }
-`
 const router = useRouter()
 const blogs = ref<[Blog]>()
 const { onResult: onBlogsResult, onError: onBlogsError } = useQuery(BLOGS)
@@ -32,7 +19,11 @@ onBlogsResult((res) => {
     blogs.value = res.data?.blogs
   }
 })
-onBlogsError(() => router.push('/auth/login'))
+onBlogsError(
+  handleAuthError({
+    onUnauthenticated: () => router.push('/auth/login'),
+  }),
+)
 </script>
 <template>
   <div class="p-8 pt-4 w-full">

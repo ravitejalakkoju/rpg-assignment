@@ -1,36 +1,22 @@
 // src/composables/useAuth.ts
+import { LOGIN, REGISTER } from '@/gql'
 import type { Author } from '@/models'
-import { gql } from '@apollo/client/core'
 import { useMutation } from '@vue/apollo-composable'
 import { computed, ref } from 'vue'
 
 const author = ref<Author | null>(null)
 const token = ref<string | null>(null)
 const isLoading = ref(false)
+const ready = ref(false)
 
-const REGISTER = gql`
-  mutation Register($input: AuthInput!) {
-    register(input: $input) {
-      accessToken
-      author {
-        id
-        email
-      }
-    }
-  }
-`
-
-const LOGIN = gql`
-  mutation Login($input: AuthInput!) {
-    login(input: $input) {
-      accessToken
-      author {
-        id
-        email
-      }
-    }
-  }
-`
+function init() {
+  if (ready.value) return
+  const storedUser = localStorage.getItem('author')
+  const storedToken = localStorage.getItem('accessToken')
+  author.value = storedUser ? JSON.parse(storedUser) : null
+  token.value = storedToken ?? null
+  ready.value = true
+}
 
 function setUser(authorVal: Author, accessToken: string) {
   if (!authorVal || !accessToken) return
@@ -41,19 +27,12 @@ function setUser(authorVal: Author, accessToken: string) {
 }
 
 export function useAuth() {
-  const isAuthenticated = computed(() => !!author.value)
   const { mutate: registerMutation } = useMutation(REGISTER)
   const { mutate: loginMutation } = useMutation(LOGIN)
 
-  const storedUser = localStorage.getItem('author')
-  if (storedUser) {
-    author.value = JSON.parse(storedUser)
-  }
+  init()
 
-  const storedToken = localStorage.getItem('accessToken')
-  if (storedToken) {
-    token.value = storedToken
-  }
+  const isAuthenticated = computed(() => !!author.value)
 
   async function login(email: string, password: string) {
     isLoading.value = true
